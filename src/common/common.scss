@@ -1,0 +1,33 @@
+$theme-color: #b0c4de;
+
+@mixin top-full-arrow($bcolor: #333, $size: 10px) {
+  display: inline-block;
+  border: $size solid transparent;
+  border-bottom: (1.5 * $size) solid $bcolor;
+  width: 0;
+  height: 0px;
+}
+
+@mixin bottom-full-arrow($bcolor: #333, $size: 10px) {
+  display: inline-block;
+  border: $size solid transparent;
+  border-top: (1.5 * $size) solid $bcolor;
+  width: 0;
+  height: 0px;
+}
+
+.outer-box {
+  padding: 0 20px;
+}
+
+.form-block {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 10px;
+}
+
+.form-block-item {
+  box-sizing: border-box;
+  width: 50%;
+  float: left;
+  padding-right: 30px;
+}

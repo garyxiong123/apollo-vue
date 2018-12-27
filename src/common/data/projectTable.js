@@ -1,0 +1,22 @@
+export default [
+  { label: "项目编号", val: 1, check: true },
+  { label: "项目名称", val: 2, check: true },
+  { label: "code", val: 3, check: true },
+  { label: "项目描述", val: 4, check: false },
+  { label: "业务类型", val: 5, check: false },
+  { label: "开始时间", val: 6, check: false },
+  { label: "所属部门", val: 7, check: false },
+  { label: "项目负责人", val: 8, check: true },
+  { label: "产品经理", val: 9, check: false },
+  { label: "运营", val: 10, check: false },
+  { label: "UI", val: 11, check: false },
+  { label: "IOS", val: 12, check: false },
+  { label: "安卓", val: 13, check: false },
+  { label: "前端", val: 14, check: false },
+  { label: "后端", val: 15, check: false },
+  { label: "测试", val: 16, check: false },
+  { label: "运维", val: 17, check: false },
+  { label: "操作人", val: 18, check: false },
+  { label: "操作时间", val: 19, check: false },
+  { label: "操作", val: 20, check: true }
+];
