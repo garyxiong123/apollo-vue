@@ -15,7 +15,7 @@
       </el-aside>
 
       <el-main class="el-main">
-        <Namespace class="namespace" v-for="(item , id) in namespaceInfos" v-bind:namespaceInfo="item" :key="id">
+        <Namespace @changeEnv="getNamespaceInfos" class="namespace" v-for="(item , id) in namespaceInfos" :namespaceInfo="item" :key="id">
         </Namespace>
       </el-main>
     </el-container>

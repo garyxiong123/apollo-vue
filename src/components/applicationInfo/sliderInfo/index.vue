@@ -1,20 +1,22 @@
 <template>
-  <section class="panel">
-    <header class="panel-heading">
+  <section class="env-panel">
+    <header class="env-panel-heading">
       环境列表
 
       <el-tooltip content="通过切换环境、集群来管理不同环境、集群的配置" placement="right" effect="light">
         <span class="pull-right">
-                <img src="../../../assets/img/question.png" class="i-20">
-                            </span>
+                <img src="../../../assets/img/question.png" class="env-panel-head-pic">
+        </span>
       </el-tooltip>
-
     </header>
 
     <div id="treeview" class="no-radius treeview">
-      <ul class="list-group">
-        <li class="list-group-item node-treeview" v-for="(env, id ) in envs" v-on:click="changeEnv(env)">
-          <span class="icon expand-icon"></span><span class="icon node-icon"></span>{{env.body.env}}
+      <ul>
+        <li  v-bind:class="{ activess : selectItem === index }"
+            v-for="(env, index ) in envs"
+            @click="changeEnv(env, index)"
+            v-on:select="changeColor">
+          {{env.body.env}}
         </li>
       </ul>
     </div>
@@ -24,8 +26,10 @@
   export default {
     data() {
       return {
-        activeName: 'second',
-        envs: []
+        activeColor: '#428bca',
+        envs: [],
+        selectItem: 0
+
       };
     },
     mounted() {
@@ -34,12 +38,24 @@
 
     },
     methods: {
-      changeEnv(env) {
 
-        this.$router.push( "/applicationInfo/"+ this.$route.params.applicationName +"/"+ env.body.env);
+
+      changeEnv(env, index) {
+        this.selectItem = index;
+        this.$router.push("/applicationInfo/" + this.$route.params.appId + "/" + env.body.env);
         //发送修改env事件
-        this.$emit('changeEnv',1,2,3)
+        this.$emit('changeEnv', 1, 2, 3)
 
+      },
+
+      changeColorBack(event) {
+        event.target.style.backgroundColor = 'white'
+
+      },
+      changeColor(event) {
+        event.target.style.backgroundColor = '#eff2f7'
+        // this.style.background='#000';
+        // console.log(target)
       },
 
       async getEnv() {
@@ -56,10 +72,10 @@
 
 
 </script>
-<style>
+<style lang="scss" scoped>
+  @import "../../../common/common.scss";
 
-
-  .panel {
+  .env-panel {
     margin-top: 20px;
     margin-bottom: 20px;
     background-color: #fff;
@@ -67,52 +83,66 @@
     border-radius: 4px;
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-  }
 
-  .panel-heading {
-    border-color: #eff2f7;
-    font-size: 16px;
-    font-weight: 300;
-    padding: 10px 15px;
-    border-bottom: 1px solid transparent;
-    border-top-right-radius: 3px;
-    border-top-left-radius: 3px;
-    border-color: #eff2f7;
-  }
+    .activess {
+      background-color: #428bca !important;
+    }
 
-  .i-20 {
-    height: 20px;
-    width: 20px;
-  }
+    .env-panel-heading {
+      border-color: #eff2f7;
+    }
 
-  .no-radius {
-    border-radius: 0;
-  }
+    .env-panel-head-pic {
+      height: 20px;
+      width: 20px;
+    }
 
-  .pull-right {
-    float: right !important;
-  }
+    .no-radius {
+      border-radius: 0;
+    }
 
-  .treeview .list-group-item {
-    cursor: pointer;
-  }
+    .pull-right {
+      float: right !important;
+    }
 
-  .list-group-item:first-child {
-    border-top-right-radius: 4px;
-    border-top-left-radius: 4px;
-  }
+    .treeview .list-group-item {
+      cursor: pointer;
+    }
 
-  .node-treeview {
-    color: #797979;
-  }
+    .list-group-item:first-child {
+      border-top-right-radius: 4px;
+      border-top-left-radius: 4px;
+    }
 
-  ul, li {
-    padding: 0;
-    margin: 0;
-  }
+    .node-treeview {
+      color: #797979;
+    }
 
-  li {
-    display: list-item;
-    text-align: -webkit-match-parent;
+    ul, li {
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      border-top: 0.1px solid #eff2f7;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13px;
+      display: list-item;
+      text-align: -webkit-match-parent;
+
+      &:hover {
+        background: #f0f8fd;
+      }
+      &:active {
+        background-color: yellow;
+      }
+      &:visited {
+        background-color: yellow;
+      }
+      &-success {
+        background-color: pink;
+      }
+    }
+
   }
 </style>

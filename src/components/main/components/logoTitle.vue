@@ -1,7 +1,7 @@
 <template>
-    <div class="nav-logo-box">
+    <div class="nav-logo-box" >
         <img class="nav-logo" :src="require('../../../assets/logo-no-text.png')" alt="logo" />
-        <span class="nav-title">有鱼apollo</span>
+        <span class="nav-title" @click="()=>this.$router.push('/applications')">有鱼apollo</span>
     </div>
 </template>
 <script>
@@ -22,6 +22,7 @@ export default {};
     font-weight: 600;
     margin-left: 10px;
     color: #000;
+    cursor:pointer;
   }
   .nav-logo {
     width: 38px;

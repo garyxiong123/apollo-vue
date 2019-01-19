@@ -1,0 +1,62 @@
+<template>
+  <div>
+    <el-table
+      ref="singleTable"
+      :data="tableData"
+      highlight-current-row
+      @current-change="handleCurrentChange"
+      style="width: 100%">
+  <!--    <el-table-column
+        type="index"
+        width="50">
+      </el-table-column>-->
+      <el-table-column
+        property="operator"
+        label="用户"
+        min-width="50">
+      </el-table-column>
+      <el-table-column
+        property="operationContext.isEmergencyPublish"
+        label="发布类型"
+        min-width="50">
+      </el-table-column>
+      <el-table-column
+        min-width="50"
+        property="releaseTimeFormatted"
+        label="发布时间">
+      </el-table-column>
+      <el-table-column
+        min-width="50"
+        property="releaseTime"
+        label="具体发布时间">
+      </el-table-column>
+      <el-table-column
+        property="releaseTitle"
+        label="发布版本号">
+      </el-table-column>
+    </el-table>
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        releaseInfo: null
+      }
+    },
+    props: {
+      tableData: Array
+    },
+
+    methods: {
+      // setCurrent(row) {
+      //   this.$refs.singleTable.setCurrentRow(row);
+      // },
+      handleCurrentChange(val) {
+        this.releaseInfo = val;
+        this.$emit('versionChange', val )
+      }
+    }
+  }
+</script>

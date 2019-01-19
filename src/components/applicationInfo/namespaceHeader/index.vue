@@ -1,23 +1,38 @@
 <template>
   <div>
     <el-row align="bottom">
-      <el-col :span="12">
+      <el-col :span="9">
+        <div class="tag-class">
+          <el-tag> {{namespaceInfo.baseInfo.namespaceName}}</el-tag>
+          <el-tag type="success">{{namespaceInfo.format}}</el-tag>
+          <el-badge v-if="namespaceInfo.itemModifiedCnt > 0" :value="namespaceInfo.itemModifiedCnt" class="item"
+                    type="warning">
+            <el-button size="small">有修改</el-button>
+          </el-badge>
+        </div>
 
-        <el-col :span="5" style="text-align: center  ;font-size: 20px;font-weight: bold;color: #797979;">
-          {{namespaceInfo.baseInfo.namespaceName}}
-        </el-col>
-        <el-col :span="1"> &nbsp;</el-col>
-        <el-col :span="3" style="background-color: #67C23A;text-align: center">{{namespaceInfo.format}}</el-col>
-        <!--<span style="float:left;margin-left: 50px;text-align: center; font-size: 20px ">{{namespaceInfo.baseInfo.namespaceName}}</span>-->
-        <!--<span style="float: left; margin: 10px">{{namespaceInfo.format}}</span>-->
+
       </el-col>
-      <el-col :span="12">
-        <el-button type="primary" icon="el-icon-edit">发布</el-button>
-        <el-button type="success" icon="el-icon-share">回滚</el-button>
-        <el-button type="warning" icon="el-icon-delete">发布历史</el-button>
-        <el-button type="info" icon="el-icon-delete">灰度</el-button>
-        <el-button type="danger" icon="el-icon-delete">删除NameSpace</el-button>
+      <el-col :span="15">
+        <el-button size="small" type="primary" icon="el-icon-edit" @click="$emit('publish')">发布</el-button>
+        <el-button size="small" type="success" icon="el-icon-share" @click="$emit('rollback')">回滚</el-button>
+        <el-button size="small" type="warning" icon="el-icon-delete" @click="toPublishHistory">发布历史</el-button>
+        <el-dropdown trigger="click" style="margin-left: 5px">
+           <span class="el-dropdown-link">
+              <i class="el-icon-delete" style="font-size: 20px"></i>
+           </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item class="clearfix">
+              <el-button size="small" type="danger" icon="el-icon-delete" @click="$emit('delete')">删除NameSpace
+              </el-button>
+
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+
       </el-col>
+
+
     </el-row>
 
   </div>
@@ -40,17 +55,32 @@
         }
       };
     },
+    props: {
+      publishDialogVisible: false,
+      namespaceInfo: Object
+
+    },
     methods: {
       handleClick(tab, event) {
         console.log(tab, event);
+      },
+
+      toPublishHistory() {
+
+        //TODO fix env不改变
+        let {appId, env, namespaceName, clusterName} = this.namespaceInfo.baseInfo;
+        let path = `?env=${env}&clusterName=${clusterName}&namespaceName=${namespaceName}`;
+        this.$router.push("/publishHistory/" + this.$route.params.appId + path);
       }
-    },
-    props: {
-      namespaceInfo: Object
+
     }
   };
 </script>
 <style>
+  .tag-class {
+    float: left;
+    margin-left: 38px;
+  }
 
   .el-row {
     margin-bottom: 10px;

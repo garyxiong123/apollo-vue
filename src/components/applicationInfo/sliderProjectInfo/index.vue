@@ -1,14 +1,13 @@
 <template>
 
-  <section class="panel">
-    <header class="panel-heading">
+  <section class="project-panel">
+    <header class="project-panel-heading">
       项目信息
 
-      <el-tooltip content="修改项目基本信息111" placement="top" effect="light">
+      <el-tooltip content="修改项目基本信息" placement="top" effect="light">
        <span class="pull-right">
-                                <a href="/app/setting.html?#/appid=ops-pms"
-                                   style="margin-right: 5px;text-decoration:none;">
-                                    <img src="../../../assets/img/edit.png" class="i-20 cursor-pointer">
+         <a style="margin-right: 5px;text-decoration:none;">
+                                    <img src="../../../assets/img/edit.png" class="env-panel-head-pic cursor-pointer">
                                 </a>
                             </span>
       </el-tooltip>
@@ -78,39 +77,46 @@
   }
   ;
 </script>
-<style>
-  .panel {
+<style lang="scss" scoped>
+
+  .project-panel {
+
     margin-bottom: 20px;
     background-color: #fff;
     border-radius: 4px;
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
     border: 1px solid #ddd;
+    font-size: 13px;
+
+    .project-panel-heading {
+      padding: 10px 15px;
+      border-bottom: 1px solid transparent;
+      border-top-right-radius: 3px;
+      border-top-left-radius: 3px;
+      padding: 10px 15px;
+      border-bottom: 1px solid transparent;
+      border-top-right-radius: 3px;
+      border-top-left-radius: 3px;
+    }
+
+    .env-panel-head-pic {
+      height: 20px;
+      width: 20px;
+    }
+
+    .project-info {
+      width: 100%;
+    }
+
+    table {
+      background-color: transparent;
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+    th {
+      white-space:nowrap;
+    }
+
   }
-
-  .panel-heading {
-    padding: 10px 15px;
-    border-bottom: 1px solid transparent;
-    border-top-right-radius: 3px;
-    border-top-left-radius: 3px;
-    padding: 10px 15px;
-    border-bottom: 1px solid transparent;
-    border-top-right-radius: 3px;
-    border-top-left-radius: 3px;
-  }
-
-  /*.panel-body {*/
-  /*padding: 15px;*/
-  /*}*/
-
-  .project-info {
-    width: 100%;
-  }
-
-  table {
-    background-color: transparent;
-    border-collapse: collapse;
-    border-spacing: 0;
-  }
-
 </style>

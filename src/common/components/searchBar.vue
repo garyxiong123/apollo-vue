@@ -1,10 +1,10 @@
 <template>
-  <el-select class="el-select" v-model="value8" filterable placeholder="搜索项目(appid或者项目名称)">
+  <el-select class="el-select" value="搜索项目(appid或者项目名称)" filterable placeholder="搜索项目(appid或者项目名称)" @change="onSelect">
     <el-option
-      v-for="item in options"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
+      v-for="item in applications"
+      :key="item.id"
+      :label="item.name"
+      :value="item.appId">
     </el-option>
   </el-select>
 </template>
@@ -13,25 +13,28 @@
   export default {
     data() {
       return {
-        options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-        value8: ''
+        applications: Array
+      }
+    },
+
+    mounted() {
+
+      this.applications = JSON.parse(localStorage.getItem("applications"))
+    },
+
+    methods: {
+      onSelect(appId) {
+        console.log(appId);
+
+        // this.$router.currentRoute.fullPath = "applicationInfo/"+appId
+        // this.$router.push("applicationInfo/"+appId)
+        this.$router.push({ path: `/applicationInfo/${appId}` })
+        location.reload();
+
       }
     }
+
+
   }
 </script>
 
@@ -39,7 +42,7 @@
 <style>
 
 
-  .el-select{
+  .el-select {
 
     margin-top: 10px;
 

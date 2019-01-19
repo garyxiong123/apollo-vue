@@ -1,12 +1,6 @@
 <template>
   <header class="main-header">
     <LogoTitle />
-    <!--<el-radio-group @change="changeEnv" size="small" style="float:left;margin-top:8px;margin-left:10px" v-model="env">-->
-        <!--&lt;!&ndash; <el-radio-button label="DEV">dev</el-radio-button> &ndash;&gt;-->
-        <!--<el-radio-button label="TEST">test</el-radio-button>-->
-        <!--<el-radio-button label="PRE">pre</el-radio-button>-->
-        <!--<el-radio-button label="PROD">prod</el-radio-button>-->
-    <!--</el-radio-group>-->
     <TopUser></TopUser>
     <searchBar></searchBar>
   </header>

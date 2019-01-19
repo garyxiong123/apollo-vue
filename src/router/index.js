@@ -12,7 +12,7 @@ const Main = () => import("@/components/main/index");
 const noAuth = () => import("@/components/noAuth");
 const applications = () => import("@/components/applications");
 const applicationInfo = () => import("@/components/applicationInfo");
-
+const publishHistory = () => import("@/components/publishHistory/index");
 Vue.use(Router);
 
 export default new Router({
@@ -32,6 +32,12 @@ export default new Router({
       path: "/applications",
       name: "applications",
       component: applications
+    },
+
+    {
+      path: "/publishHistory/:appId",
+      name: "publishHistory",
+      component: publishHistory
     },
     {
       path: "/applicationInfo/:appId/:env",
