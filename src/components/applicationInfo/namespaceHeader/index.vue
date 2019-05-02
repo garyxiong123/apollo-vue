@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row align="bottom">
-      <el-col :span="9">
+      <el-col :span="15">
         <div class="tag-class">
           <el-tag> {{namespaceInfo.baseInfo.namespaceName}}</el-tag>
           <el-tag type="success">{{namespaceInfo.format}}</el-tag>
@@ -13,7 +13,7 @@
 
 
       </el-col>
-      <el-col :span="15">
+      <el-col :span="9">
         <el-button size="small" type="primary" icon="el-icon-edit" @click="$emit('publish')">发布</el-button>
         <el-button size="small" type="success" icon="el-icon-share" @click="$emit('rollback')">回滚</el-button>
         <el-button size="small" type="warning" icon="el-icon-delete" @click="toPublishHistory">发布历史</el-button>

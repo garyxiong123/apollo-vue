@@ -17,10 +17,6 @@
         min-width="120">
       </el-table-column>
     </el-table>
-    <!--    <div style="margin-top: 20px">
-          <el-button @click="setCurrent(tableData[1])">选中第二行</el-button>
-          <el-button @click="setCurrent()">取消选择</el-button>
-        </div>-->
   </div>
 </template>
 

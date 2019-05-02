@@ -13,17 +13,30 @@
         </el-tab-pane>
         <el-tab-pane label="文本" name="text">
           <el-row class="aaa">
-            <i class="el-icon-document icon-size"></i>
-            <i v-if="textEditReadOnly" class="el-icon-edit-outline icon-size" style="margin-left: 1px"
-               @click="textEdit()"></i>
-            <i v-else class="el-icon-check icon-size" style="margin-left: 1px" @click="submitText"></i>
+
+            <el-tooltip v-if="textEditReadOnly" class="item" effect="dark" content="复制配置" placement="bottom">
+              <i class="el-icon-document icon-size"></i>
+            </el-tooltip>
+
+            <el-tooltip v-else class="item" effect="dark" content="取消修改" placement="bottom">
+              <i class="el-icon-close icon-size" style="margin-left: 1px" @click="cancelSubmitText"></i>
+            </el-tooltip>
+
+
+            <el-tooltip v-if="textEditReadOnly" class="item" effect="dark" content="修改配置" placement="bottom">
+              <i class="el-icon-edit-outline icon-size" style="margin-left: 1px" @click="textEdit()"></i>
+            </el-tooltip>
+
+            <el-tooltip v-else class="item" effect="dark" content="提交修改" placement="bottom">
+              <i class="el-icon-check icon-size" style="margin-left: 1px" @click="submitText"></i>
+            </el-tooltip>
+
           </el-row>
           <div class="textFont">
-            <editor v-model="publishedText" @init="editorInit" lang="html" :theme="theme" width="100%" height="100"></editor>
+            <editor v-model="publishedText" @init="editorInit" :lang="lang" :theme="theme" width="100%"
+                    height="100"></editor>
           </div>
 
-          <!--<NamespacePublishedText :publishedText="publishedText"-->
-                                  <!--:textEditReadOnly="textEditReadOnly"></NamespacePublishedText>-->
         </el-tab-pane>
         <el-tab-pane label="更改历史" name="changeHistory">
 
@@ -99,10 +112,10 @@
   import editor from "vue2-ace-editor";
 
 
-
   export default {
     data() {
       return {
+        lang:"html",
         editor: {},
         theme: "eclipse",
         publishedText: "",
@@ -128,11 +141,13 @@
     },
     methods:
       {
-        textEdit(){
-          debugger
+        textEdit() {
           this.editor.setReadOnly(false);
           this.theme = "chrome";
           this.textEditReadOnly = false;
+          this.lang = "yaml";
+
+
         },
 
         editorInit: function (editor) {
@@ -147,10 +162,17 @@
           editor.showPrintMargin = false;
           require('brace/ext/language_tools') //language extension prerequsite...
           require('brace/mode/html')
+          require('brace/mode/yaml')
+          require('brace/mode/python')
           require('brace/mode/javascript')    //language
           require('brace/mode/less')
           require('brace/theme/chrome')
           require('brace/theme/eclipse')
+          require('brace/theme/github')
+          require('brace/theme/dracula')
+          require('brace/theme/ambiance')
+
+
           require('brace/snippets/javascript') //snippet
           this.editor = editor;
         },
@@ -181,7 +203,6 @@
           // console.log(tab, event);
         },
         async submitText() {
-          debugger
           let data = {
             configText: this.publishedText,
             format: this.namespaceInfo.format,
@@ -189,7 +210,15 @@
           }
           let res = await this.$auth.updateItems(this.namespaceInfo, data);
         },
+        cancelSubmitText() {
+          this.textEditReadOnly = true;
+          this.editor.setReadOnly(true);
+          // this.theme = "ambiance";
+          this.lang = "html";
 
+
+
+        },
         async handlePublish(tab, event) {
           let res = await this.$auth.commitRelease(this.namespaceInfo.baseInfo, this.publish);
           this.publishDialogVisible = false;

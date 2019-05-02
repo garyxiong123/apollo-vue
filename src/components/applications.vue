@@ -39,6 +39,7 @@
       async getApplications() {
         this.loading=true;
         const res = await this.$auth.getAllApps();
+
         this.loading=false;
         this.applications = res.data;
         localStorage.setItem("applications", JSON.stringify(this.applications));

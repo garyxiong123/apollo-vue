@@ -1,6 +1,11 @@
 import axios from "axios";
 import Vue from "vue";
 import ipObj from "./ip";
+import config from "./config";
+import qs from 'qs';
+import store from "../store";
+
+
 
 function changeIp(oip, host) {
   const httpArr = oip.split('//');
@@ -8,14 +13,21 @@ function changeIp(oip, host) {
   const path = pathArr.slice(1).join('/');
   return httpArr[0] + '//' + host + '/' + path;
 }
+// axios.defaults.headers.common['Authentication-Token'] = store.state.token;
 
+axios.defaults.withCredentials=true
 axios.interceptors.request.use(config => {
-  // if (localStorage.getItem("token")) {
-  //   config.headers.Token = localStorage.getItem("token");
-  // }
+  //添加请求头
+  if (localStorage.getItem("token")) {
+    config.headers.token = localStorage.getItem("token");
+  }
+
+// debugger
+//   if(store.state.token) {
+//     config.headers.common['Authentication-Token'] = store.state.token
+//   }
   return config;
 });
-
 axios.interceptors.response.use(
   response => {
     if (response.status === 200) {
@@ -83,6 +95,17 @@ export default class Config extends axios {
       });
     });
   }
+
+  static comPostForm(path, data) {
+    return new Promise((resolve, reject) => {
+      const url = ipObj.ip + path;
+      console.log(url)
+      this.post(url, qs.stringify(data)).then(res => {
+        resolve(res);
+      });
+    });
+  }
+
   static comPost(path, data) {
     return new Promise((resolve, reject) => {
       const url = ipObj.ip + path;
@@ -116,15 +139,15 @@ export default class Config extends axios {
       });
     });
   }
-  static comSocket(path) {
-    return new Promise((resolve, reject) => {
-      if (localStorage.getItem("token")) {
-        const url = ipObj.socketIp + path + `?token=${localStorage.getItem("token")}`;
-        const socket = new WebSocket(url);
-        socket.onopen = () => {
-          resolve(socket);
-        }
-      }
-    });
-  }
+  // static comSocket(path) {
+  //   return new Promise((resolve, reject) => {
+  //     if (localStorage.getItem("token")) {
+  //       const url = ipObj.socketIp + path + `?token=${localStorage.getItem("token")}`;
+  //       const socket = new WebSocket(url);
+  //       socket.onopen = () => {
+  //         resolve(socket);
+  //       }
+  //     }
+  //   });
+  // }
 }

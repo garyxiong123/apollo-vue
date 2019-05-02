@@ -26,8 +26,6 @@
       onSelect(appId) {
         console.log(appId);
 
-        // this.$router.currentRoute.fullPath = "applicationInfo/"+appId
-        // this.$router.push("applicationInfo/"+appId)
         this.$router.push({ path: `/applicationInfo/${appId}` })
         location.reload();
 

@@ -27,10 +27,6 @@
         label="New Value">
       </el-table-column>
     </el-table>
-<!--    <div style="margin-top: 20px">
-      <el-button @click="setCurrent(tableData[1])">选中第二行</el-button>
-      <el-button @click="setCurrent()">取消选择</el-button>
-    </div>-->
   </div>
 </template>
 
@@ -41,16 +37,17 @@
         currentRow: null
       }
     },
-    props:{
-      tableData:Array
+    props: {
+      tableData: Array
     },
     methods: {
       setCurrent(row) {
         this.$refs.singleTable.setCurrentRow(row);
-      },
-      handleCurrentChange(val) {
-        this.currentRow = val;
       }
+      // ,
+      // handleCurrentChange(val) {
+      //   this.currentRow = val;
+      // }
     }
   }
 </script>

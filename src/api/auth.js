@@ -1,4 +1,5 @@
 import config from "./config";
+import qs from 'qs';
 
 const publicPath = "auth";
 
@@ -6,9 +7,14 @@ export default class Ticket extends config {
   //登录相关
   //登录
   // http://10.0.40.14:55303/signin
-  static login(data) {
-    const path = `/signin`;
-    return this.comPost(path, data);
+  // username: apollo
+  // password: admin
+  // login-submit: 登录
+
+  // http://10.0.40.14:55303/signin
+  static formLogin(data) {
+    const path = `/login`;
+    return this.comPostForm(path, data);
   }
 
   static getCommonPrefix(baseInfo) {
@@ -29,7 +35,7 @@ export default class Ticket extends config {
   }
 
   static getAllApps() {
-    const path = `/apps?appIds=`;
+    const path = `/apps/getApps?appIds=`;
     return this.comGet(path)
   }
 

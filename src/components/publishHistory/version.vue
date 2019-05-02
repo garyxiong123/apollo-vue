@@ -4,12 +4,8 @@
       ref="singleTable"
       :data="tableData"
       highlight-current-row
-      @current-change="handleCurrentChange"
+      @row-click = "rowClick"
       style="width: 100%">
-  <!--    <el-table-column
-        type="index"
-        width="50">
-      </el-table-column>-->
       <el-table-column
         property="operator"
         label="用户"
@@ -53,10 +49,12 @@
       // setCurrent(row) {
       //   this.$refs.singleTable.setCurrentRow(row);
       // },
-      handleCurrentChange(val) {
-        this.releaseInfo = val;
-        this.$emit('versionChange', val )
-      }
+
+      rowClick(row, event, column){
+        this.$emit('versionChange', row )
+        this.$refs.singleTable.getCurrentRow();
+      },
+
     }
   }
 </script>

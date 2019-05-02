@@ -7,22 +7,100 @@
     <div>
       发布历史
     </div>
-    <!--</el-header>-->
-
     <el-container>
 
       <el-aside width="520px">
-        <Version :tableData="releaseHistoryList" @versionChange="handleVersionChange(releaseInfo1)"></Version>
+        <div>
+          <el-table
+            ref="singleTable1"
+            :data="releaseHistoryList"
+            highlight-current-row
+            @row-click="rowClick"
+            style="width: 100%">
+            <el-table-column
+              property="operator"
+              label="用户"
+              min-width="50">
+            </el-table-column>
+            <el-table-column
+              property="operationContext.isEmergencyPublish"
+              label="发布类型"
+              min-width="50">
+            </el-table-column>
+            <el-table-column
+              min-width="50"
+              property="releaseTimeFormatted"
+              label="发布时间">
+            </el-table-column>
+            <el-table-column
+              min-width="50"
+              property="releaseTime"
+              label="具体发布时间">
+            </el-table-column>
+            <el-table-column
+              property="releaseTitle"
+              label="发布版本号">
+            </el-table-column>
+          </el-table>
+        </div>
+
       </el-aside>
 
       <el-main class="el-main">
 
         <el-tabs v-model="activeName" type="border-card" style="border: 0px" @tab-click="handleClick">
           <el-tab-pane label="变更的配置" name="change">
-            <Change :tableData="configChangeItems"></Change>
+            <div>
+              <el-table
+                ref="singleTable2"
+                :data="configChangeItems"
+                highlight-current-row
+                style="width: 100%">
+                <el-table-column
+                  property="oper"
+                  label="Type"
+                  min-width="120">
+                </el-table-column>
+                <el-table-column
+                  property="entity.firstEntity.key"
+                  label="Key"
+                  min-width="120">
+                </el-table-column>
+                <el-table-column
+                  min-width="120"
+                  property="entity.firstEntity.value"
+                  label="Old Value">
+                </el-table-column>
+                <el-table-column
+                  min-width="120"
+                  property="entity.secondEntity.value"
+                  label="New Value">
+                </el-table-column>
+              </el-table>
+            </div>
+
+
           </el-tab-pane>
           <el-tab-pane label="全部配置" name="all">
-            <All :tableData="configItems"></All>
+
+            <div>
+              <el-table
+                ref="singleTable3"
+                :data="configItems"
+                highlight-current-row
+                style="width: 100%">
+                <el-table-column
+                  property="firstEntity"
+                  label="key"
+                  min-width="120">
+                </el-table-column>
+                <el-table-column
+                  property="secondEntity"
+                  label="value"
+                  min-width="120">
+                </el-table-column>
+              </el-table>
+            </div>
           </el-tab-pane>
         </el-tabs>
 
@@ -46,7 +124,7 @@
         releaseHistoryList: [],
         loading: false,
         activeName: "change",
-        configChangeItems: Array,
+        configChangeItems: [],
         configItems: []
 
       }
@@ -65,21 +143,36 @@
     mounted() {
       this.activeName = "change";
       //获取发布历史
-      this.getPublishHistory();
+      this.getPublishHistory(0);
     },
     methods: {
+
+
+      transform(changes) {
+        changes.forEach(item => {
+          if (item.type == "MODIFIED") {
+            item.oper = "修改"
+          } else if (item.type == "ADDED") {
+            item.oper = "新增"
+          } else {
+            item.oper = "删除"
+          }
+        })
+        return changes;
+      },
+
+      async rowClick(row, event, column) {
+        let env = this.$route.query.env;
+        let configRes = await this.$auth.getConfigChangeDetailByEnv(env, row.releaseId, row.previousReleaseId);
+        this.configChangeItems = this.transform(configRes.data.changes);
+        this.configItems = row.configuration;
+      },
 
       handleClick() {
 
       },
-      async handleVersionChange(releaseInfo1) {
-        debugger
-        // debugger
-        // let configRes = await this.$auth.getConfigChangeDetailByEnv(env, this.releaseHistoryList.indexOf(currentRow).releaseId, this.releaseHistoryList.indexOf(currentRow).previousReleaseId);
 
-      },
-
-      async getPublishHistory() {
+      async getPublishHistory(index) {
 
         let applicationName = this.$route.params.appId;
         let env = this.$route.query.env;
@@ -88,25 +181,13 @@
         appBaseInfo.appId = applicationName;
         let res = await this.$auth.getPublishHistoryByAppIdAndEnvAndClusterAndNamespaceInPage(appBaseInfo);
         this.releaseHistoryList = res.data;
-        this.configItems = res.data[0].configuration;
+        this.configItems = res.data[index].configuration;
+        let configRes = await this.$auth.getConfigChangeDetailByEnv(env, this.releaseHistoryList[index].releaseId, this.releaseHistoryList[index + 1].previousReleaseId);
 
-        let configRes = await this.$auth.getConfigChangeDetailByEnv(env, this.releaseHistoryList[0].releaseId, this.releaseHistoryList[0].previousReleaseId);
-
-        this.configChangeItems = configRes.data.changes;
+        this.configChangeItems = this.transform(configRes.data.changes);
 
 
       }
-      // async getConfigChangeDetail(releaseHistoryList) {
-      //
-      //   let applicationName = this.$route.params.appId;
-      //   let env = this.$route.query.env;
-      //   debugger
-      //   let res = await this.$auth.getConfigChangeDetailByEnv(env, releaseHistoryList[0].releaseId, releaseHistoryList[0].previousReleaseId);
-      //   this.configChangeItems = res.data;
-      //   return res.data;
-      //
-      // }
-
 
     }
   };

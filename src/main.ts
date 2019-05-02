@@ -96,7 +96,7 @@ import {
   Notification,
   Main
 } from "element-ui";
-
+//vue 加载全局插件
 Vue.use(Pagination);
 Vue.use(Dialog);
 Vue.use(Autocomplete);
@@ -171,16 +171,16 @@ Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message;
 
 Vue.prototype.$auth = Api.auth;
-Vue.prototype.$upms = Api.upms;
+Vue.prototype.$upms = Api.upmßs;
 Vue.prototype.$base = Api.base;
 Vue.prototype._=_;
-
+//Vue.prototype 跟 后面的 this的关系？？
 Vue.prototype.global = {
   env: 'Dev'
 }
 
 Vue.config.productionTip = false;
-
+//实例化这个对象 干嘛？？
 let vm = new Vue({
   el: "#app",
   router,
@@ -188,6 +188,7 @@ let vm = new Vue({
   components: { App },
   template: "<App/>"
 });
+
 
 
 // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423
@@ -215,3 +216,4 @@ Date.prototype.Format = function (fmt) {
   return fmt;
 };
 console.log(Vue.prototype);
+window.vue = Vue;
