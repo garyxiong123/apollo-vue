@@ -13,8 +13,8 @@ export default class Ticket extends config {
 
   // http://10.0.40.14:55303/signin
   static formLogin(data) {
-    const path = `/login`;
-    return this.comPostForm(path, data);
+    const path = `/user/login`;
+    return this.comPost(path, data);
   }
 
   static getCommonPrefix(baseInfo) {
@@ -45,8 +45,8 @@ export default class Ticket extends config {
   }
 
 
-  static getAllEnv(appName) {
-    const path = `/apps/${appName}/navtree`;
+  static getAllEnv(appId) {
+    const path = `/apps/${appId}/navtree`;
     return this.comGet(path)
   }
 
