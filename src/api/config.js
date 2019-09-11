@@ -1,10 +1,7 @@
 import axios from "axios";
 import Vue from "vue";
 import ipObj from "./ip";
-import config from "./config";
 import qs from 'qs';
-import store from "../store";
-
 
 
 function changeIp(oip, host) {
@@ -13,8 +10,6 @@ function changeIp(oip, host) {
   const path = pathArr.slice(1).join('/');
   return httpArr[0] + '//' + host + '/' + path;
 }
-// axios.defaults.headers.common['Authentication-Token'] = store.state.token;
-
 axios.defaults.withCredentials=true
 axios.interceptors.request.use(config => {
   //添加请求头
@@ -22,17 +17,13 @@ axios.interceptors.request.use(config => {
     config.headers.token = localStorage.getItem("token");
   }
 
-// debugger
-//   if(store.state.token) {
-//     config.headers.common['Authentication-Token'] = store.state.token
-//   }
   return config;
 });
 axios.interceptors.response.use(
   response => {
     if (response.status === 200) {
       if (response.data.code == 200||response.data.code == 1) {
-        return response.data;
+        return response.data.data;
       } else if (!response.data.code) {
         return response;
       } else {
@@ -44,6 +35,7 @@ axios.interceptors.response.use(
       }
     }
   },
+  //错误处理
   error => {
     const res = JSON.parse(JSON.stringify(error)).response;
     console.error(error);

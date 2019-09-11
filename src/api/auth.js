@@ -25,8 +25,9 @@ export default class Ticket extends config {
 
   //登出
   static logout() {
-    const path = `/logout`;
-    return this.comGet(path);
+    const path = `/user/logout`;
+
+    return this.comPost(path, null);
   }
 
   static getMenusByUserId(data) {
@@ -50,6 +51,10 @@ export default class Ticket extends config {
     return this.comGet(path)
   }
 
+  static geAppByAppId(appId) {
+    const path = `/apps/${appId}`;
+    return this.comGet(path)
+  }
 
   static getNamespaceByApplicationAndEnv(appId, env, cluster) {
     const path = `/apps/${appId}/envs/${env}/clusters/${cluster}/namespaces`;
@@ -59,6 +64,12 @@ export default class Ticket extends config {
   static getChangeHistoryByNameapaceAndApplicationAndEnvInPage(appId, env, namespaceName, clusterName) {
 
     const path = `/apps/${appId}/envs/${env}/clusters/${clusterName}/namespaces/${namespaceName}/commits?page=0&size=10`;
+    return this.comGet(path)
+  }
+
+  static getChangeHistoryByNameapaceIdInPage(namespaceId) {
+
+    const path = `/namespaceId/${namespaceId}/commits?page=0&size=10`;
     return this.comGet(path)
   }
 
@@ -72,12 +83,12 @@ export default class Ticket extends config {
 
 
   static updateItem(namespaceInfo, data) {
-    const path = this.getCommonPrefix(namespaceInfo.baseInfo) +`/item`;
+    const path = this.getCommonPrefix(namespaceInfo.baseInfo) + `/item`;
     return this.comPut(path, data)
   }
 
   static updateItems(namespaceInfo, data) {
-    const path = this.getCommonPrefix(namespaceInfo.baseInfo) +`/items`;
+    const path = this.getCommonPrefix(namespaceInfo.baseInfo) + `/items`;
     return this.comPut(path, data)
   }
 
@@ -120,14 +131,12 @@ export default class Ticket extends config {
   }
 
 
-
   static commitRelease(appBaseInfo, release) {
     let {appId, env, clusterName, namespaceName} = appBaseInfo;
     // http://localhost:9999/apps/platform-sample-provider/envs/DEV/clusters/default/namespaces/application/releases
     const path = `/apps/${appId}/envs/${env}/clusters/${clusterName}/namespaces/${namespaceName}/releases`;
     return this.comPost(path, release);
   }
-
 
 
   static getRecentTwoReleases(appBaseInfo) {
@@ -156,6 +165,16 @@ export default class Ticket extends config {
     return this.comGet(path);
   }
 
+
+  static getContext() {
+
+    return JSON.parse(localStorage.getItem('contextObj'));
+  }
+
+
+  static setContext = (obj) => {
+    localStorage.setItem('contextObj', JSON.stringify(obj))
+  }
 
 
 }

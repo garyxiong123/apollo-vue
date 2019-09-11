@@ -3,7 +3,7 @@
     <el-row align="bottom">
       <el-col :span="15">
         <div class="tag-class">
-          <el-tag> {{namespaceInfo.baseInfo.namespaceName}}</el-tag>
+          <el-tag> {{namespaceInfo.appNamespace.name}}</el-tag>
           <el-tag type="success">{{namespaceInfo.format}}</el-tag>
           <el-badge v-if="namespaceInfo.itemModifiedCnt > 0" :value="namespaceInfo.itemModifiedCnt" class="item"
                     type="warning">
@@ -60,6 +60,8 @@
       namespaceInfo: Object
 
     },
+    beforeMount() {
+    },
     methods: {
       handleClick(tab, event) {
         console.log(tab, event);
@@ -68,7 +70,8 @@
       toPublishHistory() {
 
         //TODO fix env不改变
-        let {appId, env, namespaceName, clusterName} = this.namespaceInfo.baseInfo;
+        let namespaceName = this.namespaceInfo.appNamespace.name
+        let {appId, env, clusterName} = this.$auth.getContext();
         let path = `?env=${env}&clusterName=${clusterName}&namespaceName=${namespaceName}`;
         this.$router.push("/publishHistory/" + this.$route.params.appId + path);
       }

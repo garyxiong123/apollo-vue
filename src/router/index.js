@@ -7,21 +7,24 @@ import packages from './components/package'
 import base from './components/base'
 import monitor from './components/monitor';
 
-const Login = () => import("@/components/login");
-const Main = () => import("@/components/main/index");
+const login = () => import("#/login");
+const main = () => import("#/main/index");
 const noAuth = () => import("@/components/noAuth");
-const applications = () => import("@/components/applications");
-const applicationInfo = () => import("@/components/applicationInfo");
-const publishHistory = () => import("@/components/publishHistory/index");
+const applications = () => import("#/applications");
+const applicationInfo = () => import("#/applicationInfo");
+const publishHistory = () => import("#/publishHistory/index");
 Vue.use(Router);
-
 export default new Router({
   mode: "history",
   routes: [
     {
       path: "/",
+      name: "applications",
+      component: applications
+    }, {
+      path: "/login",
       name: "login",
-      component: Login
+      component: login
     },
     {
       path: "/noAuth",
@@ -33,7 +36,6 @@ export default new Router({
       name: "applications",
       component: applications
     },
-
     {
       path: "/publishHistory/:appId",
       name: "publishHistory",
@@ -50,7 +52,7 @@ export default new Router({
     },
     {
       path: "/main",
-      component: Main,
+      component: main,
       name: "mainMenu",
       children: [
         ...upms,

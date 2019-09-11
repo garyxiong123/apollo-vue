@@ -33,7 +33,7 @@ import MsgCenter from "./msgCenter";
 export default {
   data() {
     return {
-      userInfo: JSON.parse(localStorage.getItem("userInfo")),
+      userInfo: UserUtil.getUserInfo(),
       modPassVis: false,
       modPassForm: {},
       rules: {
@@ -59,16 +59,14 @@ export default {
     },
     async runLogout() {
       const res = await this.$auth.logout();
-      if (res) {
         localStorage.removeItem("userInfo");
         localStorage.removeItem("token");
         localStorage.removeItem("menu");
-        this.$router.push({ path: "/" });
+        this.$router.push({ path: "/login" });
         this.$message({
           type: "success",
           message: "登出成功!"
         });
-      }
     },
     modPassCancel() {
       this.modPassVis = false;

@@ -57,12 +57,16 @@
         changeSets.createItems.forEach((item) => {
           item.type = "新增"
         })
-        changeSets.updateItems.forEach((item) => {
-          item.type = "修改"
-        })
-        changeSets.deleteItems.forEach((item) => {
-          item.type = "删除"
-        })
+        if (changeSets.updateItems) {
+          changeSets.updateItems.forEach((item) => {
+            item.type = "修改"
+          })
+        }
+        if (changeSets.deleteItems) {
+          changeSets.deleteItems.forEach((item) => {
+            item.type = "删除"
+          })
+        }
         changeItemArray = changeItemArray.concat(changeSets.createItems).concat(changeSets.deleteItems).concat(changeSets.updateItems);
 
         return changeItemArray;

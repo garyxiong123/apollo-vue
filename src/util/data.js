@@ -18,22 +18,23 @@ export const ObjToFormData = (obj) => {
 }
 
 
-export const getBaseParam = (obj) => {
-  let {applicationName, env, cluster, namespaces} = this.$route.params;
-  if (!env) {
-    env = "DEV";
-  }
-  if (!cluster) {
-    cluster = "default";
-  }
-  if (!namespaces) {
-    namespaces = "applicaion";
-  }
-  let formData = {
-    "env": env,
-    "cluster": cluster,
-    "namespaces": namespaces,
-    "applicationName": applicationName
-  }
-  return formData
-}
+// export const getBaseParam = (obj) => {
+//   let {applicationName, env, cluster, namespaces} = this.$route.params;
+//   if (!env) {
+//     env = "DEV";
+//   }
+//   if (!cluster) {
+//     cluster = "default";
+//   }
+//   if (!namespaces) {
+//     namespaces = "applicaion";
+//   }
+//   let formData = {
+//     "env": env,
+//     "cluster": cluster,
+//     "namespaces": namespaces,
+//     "applicationName": applicationName
+//   }
+//   return formData
+// }
+

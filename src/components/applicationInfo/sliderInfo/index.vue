@@ -12,11 +12,11 @@
 
     <div id="treeview" class="no-radius treeview">
       <ul>
-        <li  v-bind:class="{ activess : selectItem === index }"
+        <li v-bind:class="{ activess : selectItem === index }"
             v-for="(env, index) in envs" :key="index"
             @click="changeEnv(env, index)"
             v-on:select="changeColor">
-          {{env}}
+          {{env.env}}
         </li>
       </ul>
     </div>
@@ -27,10 +27,13 @@
     data() {
       return {
         activeColor: '#428bca',
-        envs: [],
+        // envs: [],
         selectItem: 0
 
       };
+    },
+    props: {
+      envs: Array
     },
     mounted() {
 
@@ -42,7 +45,7 @@
 
       changeEnv(env, index) {
         this.selectItem = index;
-        this.$router.push("/applicationInfo/" + this.$route.params.appId + "/" + env);
+        this.$router.push("/applicationInfo/" + this.$route.params.appId + "/" + env.env);
         //发送修改env事件
         this.$emit('changeEnv', 1, 2, 3)
 
@@ -60,7 +63,7 @@
 
       async getEnv() {
         const res = await this.$auth.getAllEnv(this.$route.params.appId);
-
+        console.log(res);
         this.envs = res.data;
       },
 

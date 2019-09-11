@@ -161,7 +161,6 @@ Vue.use(Aside);
 Vue.use(Footer);
 Vue.use(Main);
 Vue.use(Loading.directive);
-
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;
@@ -171,16 +170,14 @@ Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message;
 
 Vue.prototype.$auth = Api.auth;
-Vue.prototype.$upms = Api.upmßs;
+Vue.prototype.$upms = Api.upms;
 Vue.prototype.$base = Api.base;
 Vue.prototype._=_;
 //Vue.prototype 跟 后面的 this的关系？？
 Vue.prototype.global = {
   env: 'Dev'
 }
-
 Vue.config.productionTip = false;
-//实例化这个对象 干嘛？？
 let vm = new Vue({
   el: "#app",
   router,
@@ -188,8 +185,9 @@ let vm = new Vue({
   components: { App },
   template: "<App/>"
 });
+console.log("---结束执行")
 
-
+window.vue = Vue;
 
 // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423
 // (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18

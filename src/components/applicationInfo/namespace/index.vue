@@ -22,7 +22,6 @@
               <i class="el-icon-close icon-size" style="margin-left: 1px" @click="cancelSubmitText"></i>
             </el-tooltip>
 
-
             <el-tooltip v-if="textEditReadOnly" class="item" effect="dark" content="修改配置" placement="bottom">
               <i class="el-icon-edit-outline icon-size" style="margin-left: 1px" @click="textEdit()"></i>
             </el-tooltip>
@@ -115,7 +114,7 @@
   export default {
     data() {
       return {
-        lang:"html",
+        lang: "html",
         editor: {},
         theme: "eclipse",
         publishedText: "",
@@ -139,17 +138,25 @@
     props: {
       namespaceInfo: Object,
     },
+    computed: {
+      getTitle() {
+        this.title = "发布 (只有发布过的配置才会被客户端获取到，此次发布只会作用于当前环境:" + this.namespaceInfo.envCluster.env + ")";
+        // return this.title;
+      }
+    },
     methods:
       {
+        mounted() {
+          this.getChangeItemsHistory();
+          this.publishedText = this.parsePropertiesText(this.namespaceInfo);
+
+        },
         textEdit() {
           this.editor.setReadOnly(false);
           this.theme = "chrome";
           this.textEditReadOnly = false;
           this.lang = "yaml";
-
-
         },
-
         editorInit: function (editor) {
           editor.setOptions({
             fontSize: 13,
@@ -171,33 +178,32 @@
           require('brace/theme/github')
           require('brace/theme/dracula')
           require('brace/theme/ambiance')
-
-
           require('brace/snippets/javascript') //snippet
           this.editor = editor;
         },
+
+
         parsePropertiesText: function (namespace) {
-          var result = "";
-          var itemCnt = 0;
+          debugger
+          let itemList = "";
+          let itemCnt = 0;
           namespace.items.forEach(function (item) {
-            //deleted key
-            if (!item.item.dataChangeLastModifiedBy) {
+            if (!item.dataChangeLastModifiedBy) {
               return;
             }
-            if (item.item.key) {
+            if (item.key) {
               //use string \n to display as new line
-              var itemValue = item.item.value.replace(/\n/g, "\\n");
-
-              result +=
-                item.item.key + " = " + itemValue + "\n";
+              let itemValue = item.value.replace(/\n/g, "\\n");
+              itemList +=
+                item.key + " = " + itemValue + "\n";
             } else {
-              result += item.item.comment + "\n";
+              itemList += item.comment + "\n";
             }
             itemCnt++;
           });
 
           namespace.itemCnt = itemCnt;
-          return result;
+          return itemList;
         },
         handleClick(tab, event) {
           // console.log(tab, event);
@@ -215,7 +221,6 @@
           this.editor.setReadOnly(true);
           // this.theme = "ambiance";
           this.lang = "html";
-
 
 
         },
@@ -261,10 +266,10 @@
 
         },
         async getChangeItemsHistory() {
-
-          let {appId, env, namespaceName, clusterName} = this.namespaceInfo.baseInfo;
-          let res = await this.$auth.getChangeHistoryByNameapaceAndApplicationAndEnvInPage(appId, env, namespaceName, clusterName)
-          this.changeItemsHistory = res.data;
+          let namespaceName = this.namespaceInfo.appNamespace.name;
+          let {appId, env, cluster} = this.$auth.getContext();
+          let commitsRes = await this.$auth.getChangeHistoryByNameapaceIdInPage(this.namespaceInfo.id)
+          this.changeItemsHistory = commitsRes.data;
         },
 
         getNamespaceInfos() {
@@ -272,17 +277,6 @@
         }
       }
     ,
-    computed: {
-      getTitle() {
-        this.title = "发布 (只有发布过的配置才会被客户端获取到，此次发布只会作用于当前环境:" + this.namespaceInfo.baseInfo.env + ")";
-      }
-
-    },
-    mounted() {
-      this.getChangeItemsHistory();
-      this.publishedText = this.parsePropertiesText(this.namespaceInfo);
-
-    },
     components: {
       NameSpaceHeader,
       NamespaceTable,
@@ -292,6 +286,7 @@
       RollbackTable,
       editor
     }
+
   }
   ;
 </script>

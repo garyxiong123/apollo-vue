@@ -5,7 +5,7 @@
       <i class="el-icon-warning"></i>
       <div class="text">
         <h2 style="margin:10px 0">您没有权限进入系统，请联系管理员为您添加权限</h2>
-        <el-button @click="$router.push('/')" type="warning">返回登陆页</el-button>
+        <el-button @click="$router.push('/login')" type="warning">返回登陆页</el-button>
       </div>
     </div>
   </div>

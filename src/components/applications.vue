@@ -2,14 +2,14 @@
   <div v-loading="loading">
     <top-nav></top-nav>
     <el-row :gutter="24">
-      <el-col :span="4" v-for="(item, index) in applications" :key="index">
+      <el-col :span="4" v-for="(app, index) in apps" :key="index">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span style="float: left;">{{item.name}}</span>
-            <el-button style="float: right; padding: 3px 0" type="text" @click="handleClick(item)">详情</el-button>
+            <span style="float: left;">{{app.name}}</span>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="handleClick(app)">详情</el-button>
           </div>
           <div style="float: left; padding: 3px 0">
-            {{item.appId}}
+            {{app.appId}}
           </div>
         </el-card>
       </el-col>
@@ -22,8 +22,8 @@
   export default {
     data() {
       return {
-        applications: [],
-        loading:false
+        apps: [],
+        loading: false
       }
     },
 
@@ -31,26 +31,20 @@
       TopNav
     },
 
-     mounted() {
+    mounted() {
       this.getApplications();
     },
 
     methods: {
       async getApplications() {
-        this.loading=true;
+        this.loading = true;
         const res = await this.$auth.getAllApps();
-
-        this.loading=false;
-        this.applications = res.data;
-        localStorage.setItem("applications", JSON.stringify(this.applications));
-
+        this.loading = false;
+        this.apps = res.data;
       },
-
       handleClick: function (item) {
         this.$router.push("/applicationInfo/" + item.name);
-
       },
-
       clickApplication(item) {
         this.$router.push("/applicationInfo/" + item.name);
       },

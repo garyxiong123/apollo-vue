@@ -1,10 +1,9 @@
 <template>
   <div id="app">
- <!--   <img src="./assets/logo.png">-->
+ <!--   <img src="./assets/logo.png"> 整个项目结构模版， 定义视图-->
     <router-view/>
   </div>
 </template>
-
 <script>
 export default {
   name: 'App'

@@ -67,7 +67,7 @@
     methods: {
       getAppBaseInfo() {
         let applicationName = this.$route.params.appId;
-        this.appBaseInfo = JSON.parse(localStorage.getItem('applications')).filter((item, index, array) => item.name == applicationName)[0]
+        // this.appBaseInfo = JSON.parse(localStorage.getItem('applications')).filter((item, index, array) => item.name == applicationName)[0]
       },
 
       handleClick(tab, event) {
@@ -115,7 +115,7 @@
       border-spacing: 0;
     }
     th {
-      white-space:nowrap;
+      white-space: nowrap;
     }
 
   }

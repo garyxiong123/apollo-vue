@@ -103,15 +103,14 @@
 
 
     <el-dialog title="查看配置" :visible.sync="checkDialogFormVisible" @close="checkDialogFormVisible = false">
-      <!--<span>{{rowKey}} : {{rowValue}}</span>-->
-      <el-form >
+      <el-form>
         <el-form-item label="Key" :label-width="formLabelWidth">
           <el-input v-model="rowKey" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="Value" :label-width="formLabelWidth">
-            <el-input v-model="rowValue" autocomplete="off"></el-input>
+          <el-input v-model="rowValue" autocomplete="off"></el-input>
         </el-form-item>
-        </el-form>
+      </el-form>
     </el-dialog>
   </div>
 
@@ -124,8 +123,8 @@
         dialogFormVisible: false,
         deleteDialogFormVisible: false,
         checkDialogFormVisible: false,
-        rowKey:'',
-        rowValue:'',
+        rowKey: '',
+        rowValue: '',
         search: '',
         form: {
           id: '',
@@ -142,6 +141,7 @@
     },
     computed: {
       getData() {
+        debugger
         const data = this.namespaceInfo.items;
         return data ? data.map(
           item => {

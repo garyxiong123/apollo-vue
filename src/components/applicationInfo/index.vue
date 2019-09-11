@@ -9,13 +9,14 @@
     </el-header>
     <el-container class="el-container">
       <el-aside width="220px" class="el-aside">
-        <SliderInfo @changeEnv="getNamespaceInfos"></SliderInfo>
+        <SliderInfo @changeEnv="getNamespaceInfos" :envs="envs"></SliderInfo>
         <SliderProjectInfo></SliderProjectInfo>
         <SliderOperation></SliderOperation>
       </el-aside>
 
       <el-main class="el-main">
-        <Namespace @changeEnv="getNamespaceInfos" class="namespace" v-for="(item , id) in namespaceInfos" :namespaceInfo="item" :key="id">
+        <Namespace @changeEnv="getNamespaceInfos" class="namespace" v-for="(namespaceInfo , id) in namespaceInfos"
+                   :namespaceInfo="namespaceInfo" :key="id">
         </Namespace>
       </el-main>
     </el-container>
@@ -32,26 +33,36 @@
   export default {
     data() {
       return {
-        namespaceInfos: []
+        namespaceInfos: [],
+        envs: []
       }
     },
 
     mounted() {
-
       this.getNamespaceInfos();
     },
     methods: {
       async getNamespaceInfos() {
         let {appId, env, cluster} = this.$route.params;
         if (!env) {
-          env = "DEV";
+          env = "dev";
         }
         if (!cluster) {
           cluster = "default";
         }
-        const res = await this.$auth.getNamespaceByApplicationAndEnv(appId, env, cluster)
+        let contextObj = {
+          env: env,
+          cluster: cluster,
+          appId: appId
+        }
 
-        this.namespaceInfos = res.data;
+        this.$auth.setContext(contextObj);
+        const res = await this.$auth.geAppByAppId(appId);
+        let app = res.data;
+        let envsTemp = app.envClusters
+        this.envs = envsTemp;
+        let nameSpaceRes = await this.$auth.getNamespaceByApplicationAndEnv(appId, env, cluster)
+        this.namespaceInfos = nameSpaceRes.data;
 
       }
     },
