@@ -48,28 +48,28 @@
   </article>
 </template>
 
-<script lang="ts">
+<script>
   import ipObj from "@/api/ip";
   import "@/common/qrLogin";
-  import UserUtil from "@/util/UserUtil.ts"
-  import {Component, Prop, Vue, Watch} from 'vue-property-decorator'
 
-  @Component
-  export default class login extends Vue {
-    name: "login";
+  export default {
+    name: "login",
+    data() {
+      return {
         loginForm: {
           username: "",
           password: "",
           loginMode: "ACCOUNT"
-        };
-        loginType: "password";
-        canLogin: false;
+        },
+        loginType: "password",
+        canLogin: false,
         type: 1,
         ipNum: 0,
         ip: "",
         codeUrl: "",
         loading: false,
         qrLoading: false
+      };
     },
     mounted() {
     },
@@ -86,11 +86,14 @@
       async login() {
         if (this.loginForm.username && this.loginForm.password) {
           this.loginForm.loginSubmit = "登录";
+          // this.loginForm.login-submit = "登录";
         }
-        const userInfo = await this.$auth.formLogin(this.loginForm);
-        // localStorage.setItem("userInfo", JSON.stringify(userInfo));
-        debugger
-        UserUtil.setUserInfo(userInfo);
+        const res = await this.$auth.formLogin(this.loginForm);
+        if (res == false) {
+          return;
+        }
+        //todo fix 设置token
+        localStorage.setItem("token", res.desc);
         this.$router.push("/applications");
 
       },
